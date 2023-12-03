@@ -10,6 +10,4 @@ public class Reader {
         return scanner.nextInt();
     }
 
-
-
 }

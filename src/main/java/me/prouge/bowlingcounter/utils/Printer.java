@@ -2,7 +2,6 @@ package me.prouge.bowlingcounter.utils;
 
 import me.prouge.bowlingcounter.Frame;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class Printer {
@@ -26,9 +25,7 @@ public class Printer {
     public void printBoard(final List<Frame> frames, final List<Integer> scores, int totalScore) {
         clear();
         printTitle();
-        String first = "――――――――――――――――――――――――――――――――――――――――――――";
-
-        String test = "| 1   | 2   | 3   | 4   | 5   | 6   | 7   | 8   | 9   | 10    | Total  |";
+        String frameRow = "| 1   | 2   | 3   | 4   | 5   | 6   | 7   | 8   | 9   | 10    | Total  |";
 
 
         StringBuilder frameBuilder = new StringBuilder();
@@ -76,21 +73,22 @@ public class Printer {
         frameBuilder.append("        |");
 
         total.append(totalScore);
-        if(totalScore < 10) {
+        if (totalScore < 10) {
             total.append("    |");
-        }else if (totalScore < 100) {
+        } else if (totalScore < 100) {
             total.append("   |");
-        }else {
+        } else {
             total.append("  |");
         }
 
 
-        System.out.println(first);
-        System.out.println(test);
-        System.out.println(first);
+        String line = "――――――――――――――――――――――――――――――――――――――――――――";
+        System.out.println(line);
+        System.out.println(frameRow);
+        System.out.println(line);
         System.out.println(frameBuilder);
         System.out.println(total);
-        System.out.println(first);
+        System.out.println(line);
 
 
     }

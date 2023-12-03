@@ -9,8 +9,6 @@ public class Main {
         Injector injector = Guice.createInjector();
         Game game = injector.getInstance(Game.class);
         game.start();
-
-
     }
 
 

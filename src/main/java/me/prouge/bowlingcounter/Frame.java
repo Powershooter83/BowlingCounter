@@ -2,36 +2,24 @@ package me.prouge.bowlingcounter;
 
 public class Frame {
 
-    private Pin[] pins;
-
+    private final Pin[] pins;
     private final boolean isLastFrame;
 
     public Frame(final boolean isLastFrame) {
         this.isLastFrame = isLastFrame;
-        if (isLastFrame) {
-            pins = new Pin[3];
-            return;
-        }
-        pins = new Pin[2];
-
+        pins = isLastFrame ? new Pin[3] : new Pin[2];
     }
-
 
     public void setPins(int amount, int currentThrow) {
         pins[currentThrow] = new Pin(amount);
     }
 
     public boolean isStrike() {
-        if (pins[0] == null) return false;
-
-        return pins[0].amount() == 10;
+        return pins[0] != null && pins[0].amount() == 10;
     }
 
     public boolean isSpare() {
-        if (pins[1] == null) {
-            return false;
-        }
-        return pins[0].amount() + pins[1].amount() == 10;
+        return pins[1] != null && pins[0].amount() + pins[1].amount() == 10;
     }
 
     public int getTotalScore() {
@@ -54,42 +42,45 @@ public class Frame {
         return pins[0].amount();
     }
 
-
     public String getDisplay() {
-
         if (pins[0] == null) {
             return "    ";
         }
 
         if (isLastFrame) {
-            if (pins[2] != null) {
-                String score = calculateScore().trim();
-                if (pins[2].amount() == 10) {
-                    return score + " X";
-                }
-                if (pins[2].amount() == 0) {
-                    return score + " -";
-                }
-                if (pins[2].amount() + pins[1].amount() == 10) {
-                    return score + " /";
-                }
-                return score + " " + pins[2].amount();
-
-            }
-
-            if (pins[1] != null) {
-                return calculateScore();
-            }
-
-            return switch (pins[0].amount()) {
-                case 10 -> "X    ";
-                case 0 -> "-    ";
-                default -> pins[0].amount() + "    ";
-            };
-
+            return getDisplayForLastFrame();
         }
 
+        return getDisplayForRegularFrame();
+    }
 
+    private String getDisplayForLastFrame() {
+        if (pins[2] != null) {
+            String score = calculateScore().trim();
+            if (pins[2].amount() == 10) {
+                return score + " X";
+            }
+            if (pins[2].amount() == 0) {
+                return score + " -";
+            }
+            if (pins[2].amount() + pins[1].amount() == 10) {
+                return score + " /";
+            }
+            return score + " " + pins[2].amount();
+        }
+
+        if (pins[1] != null) {
+            return calculateScore();
+        }
+
+        return switch (pins[0].amount()) {
+            case 10 -> "X    ";
+            case 0 -> "-    ";
+            default -> pins[0].amount() + "    ";
+        };
+    }
+
+    private String getDisplayForRegularFrame() {
         if (pins[1] != null) {
             if (pins[0].amount() + pins[1].amount() == 10) {
                 return pins[0].amount() + " / ";
@@ -107,14 +98,11 @@ public class Frame {
             return pins[0].amount() + " " + pins[1].amount() + " ";
         }
 
-
         return switch (pins[0].amount()) {
             case 10 -> "  X ";
             case 0 -> "-   ";
             default -> pins[0].amount() + "   ";
         };
-
-
     }
 
     private String calculateScore() {
@@ -142,7 +130,6 @@ public class Frame {
         }
         return "";
     }
-
 
     public boolean hasPlayedThrice() {
         return pins[2] != null;
